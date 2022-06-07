@@ -1,20 +1,20 @@
 package web.service;
 
+import web.dao.CarDao;
+import web.dao.CarDaoImpl;
 import web.model.Car;
-import web.service.CarService;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarSerivceImpl implements CarService {
-    private final List<Car> carList = new ArrayList<>(new Car().getCarsList());
+
+    private final CarDao carDao;
+
+    public CarSerivceImpl() {
+        carDao = new CarDaoImpl();
+    }
 
     @Override
     public List<Car> getCars(int count) {
-        List<Car> queredCars = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            queredCars.add(carList.get(i));
-        }
-        return queredCars;
+        return carDao.getCars(count);
     }
 }

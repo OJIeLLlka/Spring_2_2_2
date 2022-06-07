@@ -4,27 +4,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import web.model.Car;
 import web.service.CarSerivceImpl;
 import web.service.CarService;
 
-import java.util.List;
 
 @Controller
 public class CarController {
+    private final CarService carService;
+
+    public CarController() {
+        carService = new CarSerivceImpl();
+    }
 
     @GetMapping(value = "/cars")
-    public String printCars(@RequestParam(value = "count", required = false) Integer count, ModelMap model) {
-        CarService carSerivce = new CarSerivceImpl();
-        List<Car> carsList;
+    public String printCars(@RequestParam(value = "count", defaultValue = "5") int count, ModelMap model) {
 
-        if (count != null && count < 5 && count > 0) {
-            carsList = carSerivce.getCars(count);
-        } else {
-            carsList = carSerivce.getCars(5);
-        }
-
-        model.addAttribute("cars", carsList);
+        model.addAttribute("cars", carService.getCars(count));
         return "cars";
     }
 }
